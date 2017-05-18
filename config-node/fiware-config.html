@@ -1,0 +1,33 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fiware-config',{
+        category: 'config',
+        defaults: {
+            idas_server_url: {value: "", required:true},
+            service: { value: "", required: true},
+            servicepath: { value: "", required: true},
+            apikey: {value:"",required:true}
+        },
+        label: function() {
+            return (this.idas_server_url + "|" + this.service + this.servicepath ||'FIWARE Config');
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="fiware-config">
+    <div class="form-row">
+        <label for="node-config-input-idas_server_url"><i class="icon-bookmark"></i> IDAS Server URL</label>
+        <input type="text" id="node-config-input-idas_server_url" placeholder="http://localhost:7896/iot/d">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-service"><i class="pie-chart"></i> FIWARE Service</label>
+        <input type="text" id="node-config-input-service" placeholder="OpenIoT">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-servicepath"><i class="pie-chart"></i> FIWARE Service Path</label>
+        <input type="text" id="node-config-input-servicepath" placeholder="/">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-apikey"><i class="icon-key"></i> API Key</label>
+        <input type="text" id="node-config-input-apikey">
+    </div>
+</script>

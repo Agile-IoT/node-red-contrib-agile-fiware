@@ -1,0 +1,65 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fiware-send-data',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            server: {value:"", type:"fiware-config"},
+            deviceid: {value: ""},
+            attribute: {value: ""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "inject.png",
+        label: function() {
+            return this.name||"FiwarePushData";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="fiware-send-data">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-globe"></i> IDAS server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceid"><i class="pie-chart"></i> Device ID</label>
+        <input type="text" id="node-input-deviceid" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-attribute"><i class="pie-chart"></i> Attribute</label>
+        <input type="text" id="node-input-attribute" placeholder="">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="fiware-send-data">
+    <p>This is a node to push a sensor datum into an FIWARE IDAS IoT agent using UL protocol.</p>
+
+    <h3>Configuration</h3>
+    <dl>
+        <dt>IDAS Server URL</dt>
+        <dd>Configuration node of metrics endpoint of IDAS Server</dd>
+
+        <dt>Device ID</dt>
+        <dd>IDAS ID of device. Takes precedence over <code>deviceID</code> in message</dd>
+
+        <dt>Attribute</dt>
+        <dd>IDAS name of attribute in device. Takes precedence over <code>componentId</code> in message</dd>
+    </dl>
+    <h3>Inputs</h3>
+    <p>The payload is intended be a single sensor datum in AGILE schema.</p>
+    <dl class="message-properties">
+        <dt>deviceId</dt>
+        <dd>AGILE name of device</dd>
+
+        <dt>componentId</dt>
+        <dd>AGILE name of measure from device</dd>
+
+        <dt>value</dt>
+        <dd>Measure value</dd>
+    </dl>
+</script>
