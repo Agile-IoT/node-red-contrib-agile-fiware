@@ -11,7 +11,7 @@
   ],
   "node-red": {
     "nodes": {
-      "fiware-send-data": "send-data/send-data.js",
+      "fiware-send-data": "fiware-send-data/fiware-send-data.js",
       "fiware-config": "config-node/fiware-config.js"
     }
   },
