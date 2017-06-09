@@ -5,7 +5,7 @@
             idas_server_url: {value: "", required:true},
             service: { value: "", required: true},
             servicepath: { value: "", required: true},
-            apikey: {value:"",required:true}
+            apikey: {value:"",required:false}
         },
         label: function() {
             return (this.idas_server_url + "|" + this.service + this.servicepath ||'FIWARE Config');
@@ -15,7 +15,7 @@
 
 <script type="text/x-red" data-template-name="fiware-config">
     <div class="form-row">
-        <label for="node-config-input-idas_server_url"><i class="icon-bookmark"></i> IDAS Server URL</label>
+        <label for="node-config-input-idas_server_url"><i class="icon-bookmark"></i> HTTP binding endpoint</label>
         <input type="text" id="node-config-input-idas_server_url" placeholder="http://localhost:7896/iot/d">
     </div>
     <div class="form-row">
@@ -30,4 +30,21 @@
         <label for="node-config-input-apikey"><i class="icon-key"></i> API Key</label>
         <input type="text" id="node-config-input-apikey">
     </div>
+</script>
+<script type="text/x-red" data-help-name="fiware-config">
+    <h3>Config node</h3>
+    <dl>
+        <dt>HTTP binding endpoint</dt>
+        <dd>HTTP binding of IoT Agent</dd>
+
+        <dt>FIWARE Service, FIWARE ServicePath</dt>
+        <dd>A device is in the scope composed of these attributes. Contact the service creator if you do not know them</dd>
+
+        <dt>API Key</dt>
+        <dd>An apikey is needed to send data to the HTTP binding. If not specified, msg.apikey must contain the apikey</dd>
+    </dl>
+    <p>
+        You can have more information about FIWARE IoT at
+        <a href="https://www.fiware.org/devguides/connection-to-the-internet-of-things/how-to-read-measures-captured-from-iot-devices/">Reading data from IoT devices</a>
+    </p>
 </script>

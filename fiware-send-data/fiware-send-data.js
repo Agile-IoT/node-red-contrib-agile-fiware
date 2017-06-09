@@ -11,24 +11,36 @@ module.exports = function(RED) {
         node.server = RED.nodes.getNode(config.server);
         node.on('input', function(msg) {
 
+            function show_error(msg) {
+                node.status({fill:"red",shape:"ring",text:"Missing parameters"});
+                RED.log.error(msg);
+            }
+
             payload = JSON.parse(msg.payload);
 
-            var deviceid = config.deviceid || payload.deviceID;
-            var attribute = config.attribute || payload.componentID;
+            var deviceid = config.deviceid || payload.deviceID || "";
+            var attribute = config.attribute || payload.componentID || "";
+            var apikey = node.server.apikey || msg.apikey || "";
 
-            if (deviceid == "" || attribute == "") {
-              node.status({fill:"red",shape:"ring",text:"Missing parameters"});
-              RED.log.warn('Invalid deviceid or attribute');
-              return;
+            if (deviceid == "") {
+                show_error("Deviceid is missing. Either specify config.attribute or msg.payload.deviceID");
+                return;
+            }
+            if (attribute == "") {
+                show_error("Attribute is missing. Either specify config.attribute or msg.payload.componentID");
+                return;
+            }
+            if (apikey == "") {
+                show_error("Apikey is missing. Either specify config.server.apikey or msg.apikey");
+                return;
             }
 
             node.status({fill:"blue",shape:"ring",text:"sending"});
             d("Testing debug");
-            d(`Trying to send payload ${msg.payload} to ${deviceid}.${attribute}`);
 
             var options = {
                 url: node.server.idas_server_url,
-                qs: { k: node.server.apikey, i: deviceid },
+                qs: { k: apikey, i: deviceid },
                 method: 'POST',
                 headers: {
                     'Fiware-Service':node.server.service,
@@ -37,7 +49,7 @@ module.exports = function(RED) {
                 },
                 body: `${attribute}|${payload.value}`
             };
-
+            d(`Sending FIWARE request: ${JSON.stringify(options)}`)
             request(options, function(err, res, body) {
                 if (err) {
                     node.status({fill:"red",shape:"ring",text:"disconnected"});
@@ -47,10 +59,10 @@ module.exports = function(RED) {
 
                   if (res.statusCode===200) {
                       node.status({fill:"green",shape:"dot",text:"sent"});
-                  }
-
-                  if(res.statusCode===403) {
-                      node.status({fill:"yellow", shape:"ring", text:"Unauthorized"});
+                  } else {
+                      var msg = JSON.parse(res.body)["message"] || "<unknown error>";
+                      node.status({fill:"red", shape:"ring", text:res.statusCode});
+                      RED.log.error(`Error sending FIWARE data: ${msg}`);
                   }
                 }
             })
