@@ -39,7 +39,7 @@
 <script type="text/x-red" data-help-name="fiware-send-data">
     <p>This is a node to push a sensor datum into an FIWARE IDAS IoT agent using UL protocol.</p>
 
-    <h3>Configuration</h3>
+    <h3>Parameters</h3>
     <dl>
         <dt>IDAS Server URL</dt>
         <dd>Configuration node of metrics endpoint of IDAS Server</dd>
@@ -48,18 +48,40 @@
         <dd>IDAS ID of device. Takes precedence over <code>deviceID</code> in message</dd>
 
         <dt>Attribute</dt>
-        <dd>IDAS name of attribute in device. Takes precedence over <code>componentId</code> in message</dd>
+        <dd>IDAS name of attribute in device. Takes precedence over <code>componentID</code> in message</dd>
     </dl>
     <h3>Inputs</h3>
-    <p>The payload is intended be a single sensor datum in AGILE schema.</p>
+    <p>The <code>msg.payload</code> is intended be a single sensor datum in AGILE schema.</p>
     <dl class="message-properties">
-        <dt>deviceId</dt>
+        <dt>deviceID</dt>
         <dd>AGILE name of device</dd>
 
-        <dt>componentId</dt>
+        <dt>componentID</dt>
         <dd>AGILE name of measure from device</dd>
 
         <dt>value</dt>
         <dd>Measure value</dd>
     </dl>
+    <p>Additionally, some other fields are considered in case parameters are empty</p>
+    <dl class="message-properties">
+        <dt>msg.apikey</dt>
+        <dd>Apikey to authenticate to the UL endpoint</dd>
+    </dl>
+
+    <h3>Config node</h3>
+    <dl>
+        <dt>HTTP binding endpoint</dt>
+        <dd>HTTP binding of IoT Agent</dd>
+
+        <dt>FIWARE Service, FIWARE ServicePath</dt>
+        <dd>A device is in the scope composed of these attributes. Contact the service creator if you do not know them</dd>
+
+        <dt>API Key</dt>
+        <dd>An apikey is needed to send data to the HTTP binding. If not specified, msg.apikey must contain the apikey</dd>
+    </dl>
+    <p>
+        You can have more information about FIWARE IoT at
+        <a href="https://www.fiware.org/devguides/connection-to-the-internet-of-things/how-to-read-measures-captured-from-iot-devices/">Reading data from IoT devices</a>
+    </p>
+
 </script>
