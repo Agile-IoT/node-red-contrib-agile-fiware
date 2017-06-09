@@ -1,0 +1,30 @@
+mongo:
+   image: mongo:3.2
+   command: --nojournal
+orion:
+   image: fiware/orion
+   links:
+     - mongo
+   ports:
+     - "1026:1026"
+   command: -dbhost mongo
+rabbitmq:
+   image: rabbitmq:3.6
+   hostname: my-rabbit
+   ports:
+     - "15672:15672"
+     - "5672:5672"
+mosquitto:
+   image: toke/mosquitto
+   ports:
+     - "1883:1883"
+     - "9001:9001"
+idas:
+   image: telefonicaiot/iotagent-ul
+   links:
+     - orion
+     - mosquitto
+     - mongo
+   ports:
+     - "7896:7896"
+     - "4041:4041"
