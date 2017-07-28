@@ -1,3 +1,14 @@
+<!--
+# Copyright (C) 2017 ATOS.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+# 
+# Contributors:
+#     ATOS - initial API and implementation
+-->
+
 In order to run this example, you have to:
 
 * `docker-compose up` : prepare the FIWARE servers. You must make ports 1026 and 4041 accesible.
