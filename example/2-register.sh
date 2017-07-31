@@ -5,14 +5,14 @@ IDAS_URL=${IDAS_URL:-http://localhost:4041}
 
 curl -X POST \
     -H"Content-type: application/json" \
-    -H"X-Auth-Token: $(<token)" \
+    -H"X-Auth-Token: a-token" \
     -H"Fiware-Service: OpenIoT" \
     -H"Fiware-ServicePath: /agile" \
     -d@- \
     $IDAS_URL/iot/devices <<EOF
 
 {"devices": [
-  { "device_id": "agile-temperature",
+  { "device_id": "temp",
     "entity_name": "agile-temperature",
     "entity_type": "thing",
     "timezone": "Europe/Madrid",
