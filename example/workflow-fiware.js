@@ -1,1 +1,314 @@
-[{"id":"b7770c7.af87bf","type":"tab","label":"Flow 1"},{"id":"fa46e6ab.54e888","type":"tab","label":"Flow 2"},{"id":"71f3af12.39b1f","type":"fiware-config","z":"","idas_server_url":"http://172.24.38.56:7896/iot/d","service":"OpenIoT","servicepath":"/agile","apikey":""},{"id":"91a76986.594468","type":"agile-config-server","z":"","host":"agile","port":"8080"},{"id":"9f6076c.e111288","type":"ui_group","z":"","name":"Temperature","tab":"bc120e4e.c9c43","disp":true,"width":"6"},{"id":"bc120e4e.c9c43","type":"ui_tab","z":"","name":"Home","icon":"dashboard"},{"id":"b1d9c1f6.f43bd","type":"ui_base","theme":{"name":"theme-light","lightTheme":{"default":"#0094CE","baseColor":"#0094CE","baseFont":"Helvetica Neue","edited":true,"reset":false},"darkTheme":{"default":"#097479","baseColor":"#097479","baseFont":"Helvetica Neue","edited":false},"customTheme":{"name":"Untitled Theme 1","default":"#4B7930","baseColor":"#4B7930","baseFont":"Helvetica Neue"},"themeState":{"base-color":{"default":"#0094CE","value":"#0094CE","edited":false},"page-titlebar-backgroundColor":{"value":"#0094CE","edited":false},"page-backgroundColor":{"value":"#fafafa","edited":false},"page-sidebar-backgroundColor":{"value":"#ffffff","edited":false},"group-textColor":{"value":"#1bbfff","edited":false},"group-borderColor":{"value":"#ffffff","edited":false},"group-backgroundColor":{"value":"#ffffff","edited":false},"widget-textColor":{"value":"#111111","edited":false},"widget-backgroundColor":{"value":"#0094ce","edited":false},"widget-borderColor":{"value":"#ffffff","edited":false}}},"site":{"name":"Node-RED Dashboard","hideToolbar":"false","allowSwipe":"false","dateFormat":"DD/MM/YYYY","sizes":{"sx":48,"sy":48,"gx":6,"gy":6,"cx":6,"cy":6,"px":0,"py":0}}},{"id":"18689ae8.ff84d5","type":"fiware-send-data","z":"b7770c7.af87bf","name":"fiware send","server":"71f3af12.39b1f","deviceid":"agile-temperature","attribute":"t","x":590,"y":260,"wires":[[]]},{"id":"7d1e720e.f5c82c","type":"agile-device-read","z":"b7770c7.af87bf","server":"91a76986.594468","name":"dummy","deviceId":"dummy001122334455","componentId":"DummyData","interval":"10","x":84,"y":260,"wires":[["8f359a6e.21ec18"]]},{"id":"8f359a6e.21ec18","type":"idm-token","z":"b7770c7.af87bf","name":"","tokensource":"session","idm":"http://agile-idm:3000","userinfo":false,"x":229.5,"y":260,"wires":[["8490f315.5986b"]]},{"id":"8bf5fac6.ed96b8","type":"idm-attribute","z":"b7770c7.af87bf","name":"idm apikey","idm":"http://agile-idm:3000","property":"attribute","x":408.5,"y":260,"wires":[["18689ae8.ff84d5"]]},{"id":"8490f315.5986b","type":"function","z":"b7770c7.af87bf","name":"idm apikey params","func":"msg.entity_id = \"agile!@!agile-local\";\nmsg.entity_type = \"user\";\nmsg.attribute = \"credentials.fiware-idas\";\nmsg.destination_property = \"apikey\";\nreturn msg;","outputs":1,"noerr":0,"x":310.5,"y":323,"wires":[["8bf5fac6.ed96b8"]]},{"id":"262f278a.3b0c38","type":"inject","z":"fa46e6ab.54e888","name":"trigger","topic":"","payload":"","payloadType":"date","repeat":"10","crontab":"","once":true,"x":136.5,"y":203,"wires":[["e79398f8.9a4608"]]},{"id":"d39a7c78.e1a42","type":"http request","z":"fa46e6ab.54e888","name":"request orion","method":"GET","ret":"txt","url":"http://172.24.38.56:1026/v2/entities/agile-temperature?attrs=temperature","tls":"","x":501.5,"y":204,"wires":[["f846eb5d.4678c8"]]},{"id":"e79398f8.9a4608","type":"function","z":"fa46e6ab.54e888","name":"prepare req","func":"msg.headers = {\n  \"Fiware-Service\": \"OpenIoT\",\n  \"Fiware-ServicePath\": \"/agile\"\n};\nreturn msg;","outputs":1,"noerr":0,"x":317.5,"y":204,"wires":[["d39a7c78.e1a42"]]},{"id":"2bf022e1.df6f3e","type":"ui_chart","z":"fa46e6ab.54e888","name":"","group":"9f6076c.e111288","order":0,"width":0,"height":0,"label":"chart","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"x":413.5,"y":312,"wires":[[],[]]},{"id":"f846eb5d.4678c8","type":"function","z":"fa46e6ab.54e888","name":"parse chart","func":"var o = JSON.parse(msg.payload);\nmsg.payload = o[\"temperature\"][\"value\"];\nreturn msg;","outputs":1,"noerr":0,"x":265.5,"y":312,"wires":[["2bf022e1.df6f3e"]]}]
+[
+    {
+        "id": "b7770c7.af87bf",
+        "label": "Flow 1",
+        "type": "tab"
+    },
+    {
+        "id": "fa46e6ab.54e888",
+        "label": "Flow 2",
+        "type": "tab"
+    },
+    {
+        "apikey": "",
+        "id": "71f3af12.39b1f",
+        "idas_server_url": "http://172.24.38.56:7896/iot/d",
+        "service": "OpenIoT",
+        "servicepath": "/agile",
+        "type": "fiware-config",
+        "z": ""
+    },
+    {
+        "host": "agile",
+        "id": "91a76986.594468",
+        "port": "8080",
+        "type": "agile-config-server",
+        "z": ""
+    },
+    {
+        "disp": true,
+        "id": "9f6076c.e111288",
+        "name": "Temperature",
+        "tab": "bc120e4e.c9c43",
+        "type": "ui_group",
+        "width": "6",
+        "z": ""
+    },
+    {
+        "icon": "dashboard",
+        "id": "bc120e4e.c9c43",
+        "name": "Home",
+        "type": "ui_tab",
+        "z": ""
+    },
+    {
+        "id": "b1d9c1f6.f43bd",
+        "site": {
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "hideToolbar": "false",
+            "name": "Node-RED Dashboard",
+            "sizes": {
+                "cx": 6,
+                "cy": 6,
+                "gx": 6,
+                "gy": 6,
+                "px": 0,
+                "py": 0,
+                "sx": 48,
+                "sy": 48
+            }
+        },
+        "theme": {
+            "customTheme": {
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue",
+                "default": "#4B7930",
+                "name": "Untitled Theme 1"
+            },
+            "darkTheme": {
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "default": "#097479",
+                "edited": false
+            },
+            "lightTheme": {
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "default": "#0094CE",
+                "edited": true,
+                "reset": false
+            },
+            "name": "theme-light",
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "edited": false,
+                    "value": "#0094CE"
+                },
+                "group-backgroundColor": {
+                    "edited": false,
+                    "value": "#ffffff"
+                },
+                "group-borderColor": {
+                    "edited": false,
+                    "value": "#ffffff"
+                },
+                "group-textColor": {
+                    "edited": false,
+                    "value": "#1bbfff"
+                },
+                "page-backgroundColor": {
+                    "edited": false,
+                    "value": "#fafafa"
+                },
+                "page-sidebar-backgroundColor": {
+                    "edited": false,
+                    "value": "#ffffff"
+                },
+                "page-titlebar-backgroundColor": {
+                    "edited": false,
+                    "value": "#0094CE"
+                },
+                "widget-backgroundColor": {
+                    "edited": false,
+                    "value": "#0094ce"
+                },
+                "widget-borderColor": {
+                    "edited": false,
+                    "value": "#ffffff"
+                },
+                "widget-textColor": {
+                    "edited": false,
+                    "value": "#111111"
+                }
+            }
+        },
+        "type": "ui_base"
+    },
+    {
+        "attribute": "t",
+        "deviceid": "temp",
+        "id": "18689ae8.ff84d5",
+        "name": "fiware send",
+        "server": "71f3af12.39b1f",
+        "type": "fiware-send-data",
+        "wires": [
+            []
+        ],
+        "x": 590,
+        "y": 260,
+        "z": "b7770c7.af87bf"
+    },
+    {
+        "componentId": "DummyData",
+        "deviceId": "dummy001122334455",
+        "id": "7d1e720e.f5c82c",
+        "interval": "10",
+        "name": "dummy",
+        "server": "91a76986.594468",
+        "type": "agile-device-read",
+        "wires": [
+            [
+                "8f359a6e.21ec18"
+            ]
+        ],
+        "x": 84,
+        "y": 260,
+        "z": "b7770c7.af87bf"
+    },
+    {
+        "id": "8f359a6e.21ec18",
+        "idm": "http://agile-security:3000",
+        "name": "",
+        "tokensource": "session",
+        "type": "idm-token",
+        "userinfo": false,
+        "wires": [
+            [
+                "8490f315.5986b"
+            ]
+        ],
+        "x": 229.5,
+        "y": 260,
+        "z": "b7770c7.af87bf"
+    },
+    {
+        "id": "8bf5fac6.ed96b8",
+        "idm": "http://agile-security:3000",
+        "name": "idm apikey",
+        "property": "attribute",
+        "type": "idm-attribute",
+        "wires": [
+            [
+                "18689ae8.ff84d5"
+            ]
+        ],
+        "x": 408.5,
+        "y": 260,
+        "z": "b7770c7.af87bf"
+    },
+    {
+        "func": "msg.entity_id = \"agile!@!agile-local\";\nmsg.entity_type = \"user\";\nmsg.attribute = \"credentials.fiware-idas\";\nmsg.destination_property = \"apikey\";\nreturn msg;",
+        "id": "8490f315.5986b",
+        "name": "idm apikey params",
+        "noerr": 0,
+        "outputs": 1,
+        "type": "function",
+        "wires": [
+            [
+                "8bf5fac6.ed96b8"
+            ]
+        ],
+        "x": 310.5,
+        "y": 323,
+        "z": "b7770c7.af87bf"
+    },
+    {
+        "crontab": "",
+        "id": "262f278a.3b0c38",
+        "name": "trigger",
+        "once": true,
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "10",
+        "topic": "",
+        "type": "inject",
+        "wires": [
+            [
+                "e79398f8.9a4608"
+            ]
+        ],
+        "x": 136.5,
+        "y": 203,
+        "z": "fa46e6ab.54e888"
+    },
+    {
+        "id": "d39a7c78.e1a42",
+        "method": "GET",
+        "name": "request orion",
+        "ret": "txt",
+        "tls": "",
+        "type": "http request",
+        "url": "http://172.24.38.56:1026/v2/entities/agile-temperature?attrs=temperature",
+        "wires": [
+            [
+                "f846eb5d.4678c8"
+            ]
+        ],
+        "x": 501.5,
+        "y": 204,
+        "z": "fa46e6ab.54e888"
+    },
+    {
+        "func": "msg.headers = {\n  \"Fiware-Service\": \"OpenIoT\",\n  \"Fiware-ServicePath\": \"/agile\"\n};\nreturn msg;",
+        "id": "e79398f8.9a4608",
+        "name": "prepare req",
+        "noerr": 0,
+        "outputs": 1,
+        "type": "function",
+        "wires": [
+            [
+                "d39a7c78.e1a42"
+            ]
+        ],
+        "x": 317.5,
+        "y": 204,
+        "z": "fa46e6ab.54e888"
+    },
+    {
+        "chartType": "line",
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "cutout": 0,
+        "group": "9f6076c.e111288",
+        "height": 0,
+        "id": "2bf022e1.df6f3e",
+        "interpolate": "linear",
+        "label": "chart",
+        "legend": "false",
+        "name": "",
+        "nodata": "",
+        "order": 0,
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "type": "ui_chart",
+        "width": 0,
+        "wires": [
+            [],
+            []
+        ],
+        "x": 413.5,
+        "xformat": "HH:mm:ss",
+        "y": 312,
+        "ymax": "",
+        "ymin": "",
+        "z": "fa46e6ab.54e888"
+    },
+    {
+        "func": "var o = JSON.parse(msg.payload);\nmsg.payload = o[\"temperature\"][\"value\"];\nreturn msg;",
+        "id": "f846eb5d.4678c8",
+        "name": "parse chart",
+        "noerr": 0,
+        "outputs": 1,
+        "type": "function",
+        "wires": [
+            [
+                "2bf022e1.df6f3e"
+            ]
+        ],
+        "x": 265.5,
+        "y": 312,
+        "z": "fa46e6ab.54e888"
+    }
+]
