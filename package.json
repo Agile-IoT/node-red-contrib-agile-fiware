@@ -16,7 +16,7 @@
     }
   },
   "author": "Román Sosa",
-  "license": "Eclipse Public License + Eclipse Distribution License",
+  "license": "EPL-2.0",
   "dependencies": {
     "debug": "^2.6.1",
     "request": "^2.81.0"
